@@ -1,42 +1,59 @@
-﻿// Написать программу, которая из имеющегося массива строк формирует массив
-// из строк, длина которых меньше либо равна три символа.
+﻿// Написать программу, которая из имеющегося массива строк формирует массив из строк, длина которых меньше либо равна 3 символа.
+// Первоначальный массив можно ввести с клавиатуры, либо задать на старте выполнения алгоритма.
+// При решении не рекомендуется пользоваться коллекциями, лучше обойтись исключительно массивами.
 
-string[] InputArray(string text)
+string[] FillArray(int sizeArrayWords)
 {
-    System.Console.Write(text);
-    var array = Array.ConvertAll(Console.ReadLine().Split(", "), Convert.ToString);
+    string[] array = new string[sizeArrayWords];
+    for (int i = 0; i < array.Length; i++)
+    {
+        array[i] = Console.ReadLine();
+    }
     return array;
 }
 
-void PrintArray(string[] array)
+int CountWordsThreeSymbol(string[] array, int countDesired)
 {
-    System.Console.WriteLine("[" + string.Join(",", array) + "]");
-}
-
-int CountLessFourSimbolsElements(string[] array)
-{
-    int result = 0;
+    int sizeArray = 0;
     for (int i = 0; i < array.Length; i++)
-        if (array[i].Length <= 3)
-            result++;
-    return result;
+    {
+        if (array[i].Length <= countDesired) sizeArray++;
+    }
+    return sizeArray;
 }
 
-string[] LessFourSimbolsArray(string[] array, int size)
+string[] ArrayWords(string[] array, int sizeArray, int countDesired)
 {
-    string[] newArray = new string[size];
+    string[] resultArray = new string[sizeArray];
     int j = 0;
     for (int i = 0; i < array.Length; i++)
-        if (array[i].Length <= 3)
+    {
+        if (array[i].Length <= countDesired)
         {
-            newArray[j] = array[i];
+            resultArray[j] = array[i];
             j++;
         }
-    return newArray;
+    }
+    return resultArray;
 }
 
-string[] myArray = InputArray("Введите строки через запятую и пробел: ");
-int sizeNewArray = CountLessFourSimbolsElements(myArray);
-string[] newArray = LessFourSimbolsArray(myArray, sizeNewArray);
-System.Console.Write("Массив из строк исходного массива, длина которых меньше либо равна три символа: ");
-PrintArray(newArray);
+const int countSymbol = 3;
+
+Console.Write("Введите количество строк: ");
+int size = Convert.ToInt32(Console.ReadLine());
+if (size < 1)
+{
+    Console.Write("Введите натуральное число");
+    return;
+}
+
+string[] oldArray = FillArray(size);
+
+int count = CountWordsThreeSymbol(oldArray, countSymbol);
+
+string[] newArray = ArrayWords(oldArray, count, countSymbol);
+
+Console.Write($"[{string.Join(", ", oldArray)}]");
+Console.WriteLine();
+
+Console.Write($"[{string.Join(", ", newArray)}]");
